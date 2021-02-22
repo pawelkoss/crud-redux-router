@@ -1,0 +1,10 @@
+[build]	
+    command = "npm build"
+    build = "build"
+    publish="proexe/build"
+    base = "proexe"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
