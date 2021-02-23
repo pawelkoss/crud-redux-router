@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import UserListContainer from './app/components/UserListContainer';
 import AddUser from './app/components/AddUser'
@@ -6,9 +7,18 @@ import {
   Route
 } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useDispatch } from 'react-redux';
+import { getUserList } from '../src/app/api/apiService'
 
 
-function App() {
+const App = () => {
+
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+       dispatch(getUserList());
+  }, []);
+
   return (
     <Router>
     <Container fluid="md">

@@ -1,4 +1,5 @@
-import actions from '../redux/actions'
+import actions from '../redux/actions';
+
 
 const url ="https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data";
 
@@ -15,18 +16,19 @@ export const getUserList = () => async (dispatch) => {
     users.map(user => dispatch(actions.addUser(user)));
 }
 
-export const saveUser = () => async (dispatch, getState) => {
-    const user = getState().user;
-    
+export const saveUser = (formData) => async (dispatch, getState) => {
+    //const user = getState().user;
+
     await fetch(url, {
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-type': 'application/json'
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify(formData)
     })
-    alert("User added");
-    // todo przekierowanie do "/"
+    console.log(formData);
+     alert("User added");
+     dispatch(actions.isLoaded());
     
   } 

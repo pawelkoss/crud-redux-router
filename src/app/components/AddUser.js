@@ -1,35 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { Card, Table, Button, Form, Col } from 'react-bootstrap';
-import { connect } from 'react-redux'
+import { Card, Button, Form } from 'react-bootstrap';
+//import { connect } from 'react-redux'
 import actions from "../redux/actions"
 import { saveUser } from '../api/apiService'
-import { withRouter } from "react-router";
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 
-const AddUser = ({usersList, saveUser, addUser}) => {
+const AddUser = () => {
 
     const { register, handleSubmit } = useForm();
     const history = useHistory();
+    const usersList = useSelector(state => state.usersList);
+    const isLoaded = useSelector(state => state.isLoaded)
+    const dispatch = useDispatch();
 
     const onSubmit = (formData) => {
-        console.log(`Form: ${formData.name}`);
-        console.log(usersList);
-        addUser(formData);
-        saveUser(formData);
+        console.log(`Form: ${formData.username}`);
+        const emptyFields = {id:101, name:"", address:{city:""}};
+
+        //formData.id=101; formData.name="", formData.city="";
+        dispatch(actions.addUser({...formData, ...emptyFields}));    // add user to local state
+        dispatch(saveUser(formData));           // add user to api
+        console.log(`state: ${usersList}`);
         
     };
+
+    useEffect(() => {
+      if(isLoaded) history.push("/");
+
+      console.log(`isLoaded ${isLoaded}`)
+    }, [isLoaded]);
     
     return (
     <Card>
         <Card.Header as="h5">Add user </Card.Header>
         <Card.Body>
             <Form  onSubmit={handleSubmit(onSubmit)}>
-            <Form.Group controlId="formName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control type="text" name="name" placeholder="Name" ref={register({ required: true })}/>
+            <Form.Group controlId="formUserName">
+              <Form.Label>User name</Form.Label>
+              <Form.Control type="text" name="username" placeholder="User name" ref={register({ required: true })}/>
             </Form.Group>
             
             <Form.Group controlId="formEmail">
@@ -47,13 +59,11 @@ const AddUser = ({usersList, saveUser, addUser}) => {
 
 }
 
-const mapStateToProps = (state) => ({
-    usersList: state.usersList
-}) 
+/*
 const mapDispatchToProps = dispatch => ({
     saveUser: () => dispatch(saveUser()),
     addUser: formData => dispatch(actions.addUser(formData))
-    
 })
+*/
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddUser))
+export default AddUser;

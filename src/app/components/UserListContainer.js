@@ -1,28 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Table, Button } from 'react-bootstrap';
-//import { useDispatch, useSelector } from "react-redux";
-import { connect } from 'react-redux';
-import { getUserList } from '../api/apiService';
-import { withRouter } from 'react-router';
+// import { useDispatch, useSelector } from "react-redux";
+// import { connect } from 'react-redux';
+// import { getUserList } from '../api/apiService';
 import actions from '../redux/actions';
+import { useSelector, useDispatch } from 'react-redux';
 
 
-const UserListContainer = ({loadFromState, usersList, getUserList, delUser, delAll}) => {
+const UserListContainer = () => {
+    const [loadUsers, setLoadUsers] = useState(false);
+    const usersList = useSelector(state => state.usersList);
+    const dispatch = useDispatch();
 
-    //const userList = useSelector(state => state.userList);
-    //const dispatch = useDispatch();
-
+    console.log(`loadUsers ${loadUsers}`);
+/*
     useEffect(() => {
-        console.log("useEffect ULC")
-        getUserList();
-        
+        console.log("useEffect ULC");
+        // getUserList();
+        if (loadUsers === false) dispatch(getUserList());
+        setLoadUsers(true);
     }, []);
-
+*/
     const handleDelUser = (index) => {
-        delUser(index);
+        // delUser(index);
+        dispatch(actions.delUser(index));
     }
     const handleDelAllUsers = () => {
-        delAll();
+        // delAll();
+        dispatch(actions.delAll());
     }
 
     
@@ -66,7 +71,7 @@ const UserListContainer = ({loadFromState, usersList, getUserList, delUser, delA
        
     )
 }
-
+/*
 const mapStateToProps = (state) => ({
     usersList: state.usersList,
     loadFromState: state.loadFromState
@@ -77,6 +82,7 @@ const mapDispatchToProps = dispatch => ({
     delAll: () => dispatch(actions.delAll())
     
 })
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserListContainer))
+*/
+//export default connect(mapStateToProps, mapDispatchToProps)(UserListContainer)
+export default UserListContainer
 
