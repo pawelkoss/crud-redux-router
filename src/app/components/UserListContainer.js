@@ -5,12 +5,14 @@ import { Card, Table, Button } from 'react-bootstrap';
 // import { getUserList } from '../api/apiService';
 import actions from '../redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 
 const UserListContainer = () => {
     const [loadUsers, setLoadUsers] = useState(false);
     const usersList = useSelector(state => state.usersList);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     console.log(`loadUsers ${loadUsers}`);
 /*
@@ -29,13 +31,17 @@ const UserListContainer = () => {
         // delAll();
         dispatch(actions.delAll());
     }
+    const handleAllowRedirect = () => {
+        dispatch(actions.allowRedirect(false));
+        history.push("/add");
+    }
 
     
 
 
     return (      
     <Card>
-        <Card.Header as="h5" className="d-flex justify-content-between">User list <Button href="/add" variant="primary">Add user</Button></Card.Header>
+        <Card.Header as="h5" className="d-flex justify-content-between">User list <Button onClick={() => handleAllowRedirect()} variant="primary">Add user</Button></Card.Header>
         <Card.Body>
             <Table striped bordered hover>
                 <thead>

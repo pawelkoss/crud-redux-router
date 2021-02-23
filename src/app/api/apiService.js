@@ -29,6 +29,6 @@ export const saveUser = (formData) => async (dispatch, getState) => {
     })
     console.log(formData);
      alert("User added");
-     dispatch(actions.isLoaded());
+     dispatch(actions.allowRedirect(true));
     
   } 

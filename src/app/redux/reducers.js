@@ -1,9 +1,10 @@
 import actions from './actions'
 
 const INITIAL_STATE = {
-    isLoaded: false,
+    allowRedirect: false,
     loadFromState: false,
-    usersList: [{id:"0", name:"Pawel", username:"koss", email:"gmail", address:{city:"bstok"}}]
+    //usersList: [{id:"0", name:"Pawel", username:"koss", email:"gmail", address:{city:"bstok"}}]
+    usersList:[]
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -17,8 +18,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
       case actions.DEL_ALL: {
         return { ...state, usersList:[]}
       }
-      case actions.IS_LOAD: {
-        return { ...state, isLoaded: true}
+      case actions.ALLOW_REDIRECT: {
+        return { ...state, allowRedirect: action.bool}
       }
       default:
         return state

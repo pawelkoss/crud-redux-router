@@ -14,25 +14,31 @@ const AddUser = () => {
     const { register, handleSubmit } = useForm();
     const history = useHistory();
     const usersList = useSelector(state => state.usersList);
-    const isLoaded = useSelector(state => state.isLoaded)
+    const allowRedirect = useSelector(state => state.allowRedirect)
     const dispatch = useDispatch();
+
+    //let user = {id:"", name:"", username:"", email:"", address:{city:""}};
 
     const onSubmit = (formData) => {
         console.log(`Form: ${formData.username}`);
-        const emptyFields = {id:101, name:"", address:{city:""}};
+        //const emptyFields = {id:101, name:"", address:{city:""}};
+        let lastID = usersList[usersList.length-1].id;
+        console.log(lastID);
+        let user = {id:lastID+1, name:"", username:formData.username, email:formData.email, address:{city:""}};
 
         //formData.id=101; formData.name="", formData.city="";
-        dispatch(actions.addUser({...formData, ...emptyFields}));    // add user to local state
+        //dispatch(actions.addUser({...formData, ...emptyFields}));    // add user to local state
+        dispatch(actions.addUser(user));
         dispatch(saveUser(formData));           // add user to api
-        console.log(`state: ${usersList}`);
+        //console.log(`state: ${usersList}`);
         
     };
 
     useEffect(() => {
-      if(isLoaded) history.push("/");
+      if(allowRedirect) history.push("/");
 
-      console.log(`isLoaded ${isLoaded}`)
-    }, [isLoaded]);
+      console.log(`allowRedirect ${allowRedirect}`)
+    }, [allowRedirect]);
     
     return (
     <Card>
