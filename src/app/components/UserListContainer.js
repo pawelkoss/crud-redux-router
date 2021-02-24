@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Table, Button } from 'react-bootstrap';
+import { Card, Table, Button, Modal } from 'react-bootstrap';
 // import { useDispatch, useSelector } from "react-redux";
 // import { connect } from 'react-redux';
 // import { getUserList } from '../api/apiService';
@@ -9,12 +9,16 @@ import { useHistory } from 'react-router-dom';
 
 
 const UserListContainer = () => {
-    const [loadUsers, setLoadUsers] = useState(false);
+
+  const [showDel, setShowDel] = useState([false, null]);
+  const handleCloseDel = () => setShowDel([false, null]);
+  const handleShowDel = (index) => setShowDel([true, index]);
+
     const usersList = useSelector(state => state.usersList);
     const dispatch = useDispatch();
     const history = useHistory();
 
-    console.log(`loadUsers ${loadUsers}`);
+    //console.log(`loadUsers ${loadUsers}`);
 /*
     useEffect(() => {
         console.log("useEffect ULC");
@@ -23,9 +27,10 @@ const UserListContainer = () => {
         setLoadUsers(true);
     }, []);
 */
-    const handleDelUser = (index) => {
-        // delUser(index);
-        dispatch(actions.delUser(index));
+    const handleDelUser = () => {
+        handleCloseDel();
+
+        dispatch(actions.delUser(showDel[1]));
     }
     const handleDelAllUsers = () => {
         // delAll();
@@ -39,7 +44,8 @@ const UserListContainer = () => {
     
 
 
-    return (      
+    return (   
+    <>   
     <Card>
         <Card.Header as="h5" className="d-flex justify-content-between">User list <Button onClick={() => handleAllowRedirect()} variant="primary">Add user</Button></Card.Header>
         <Card.Body>
@@ -64,7 +70,7 @@ const UserListContainer = () => {
                         <td>{user.email}</td>
                         <td>{user.address.city}</td>
                         <td><Button variant="warning" >Edit</Button></td>
-                        <td><Button  onClick={() => handleDelUser(index)} variant="danger" >Delete</Button></td>
+                        <td><Button  onClick={() => handleShowDel(index)} variant="danger" >Delete</Button></td>
                     </tr>
                     )}
                 </tbody>
@@ -74,6 +80,22 @@ const UserListContainer = () => {
         </Card.Body>
     </Card>
 
+    <Modal show={showDel[0]} onHide={handleCloseDel} >
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseDel}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleDelUser}>
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+    </>
        
     )
 }
