@@ -25,7 +25,7 @@ const App = () => {
         <Col><h4>Dashboard</h4>
         <Route exact path="/" component={UserListContainer} />
         <Route path="/add" component={AddUser} />
-        <Route path="/edit:id" component={AddUser} />
+        <Route path="/edit/:id" component={EditUser} />
         </Col>
       </Row>
     </Container>
