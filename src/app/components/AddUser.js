@@ -22,7 +22,9 @@ const AddUser = () => {
     const onSubmit = (formData) => {
         console.log(`Form: ${formData.username}`);
         //const emptyFields = {id:101, name:"", address:{city:""}};
-        let lastID = usersList[usersList.length-1].id;
+        let lastID;
+        usersList.length > 0 ? lastID = usersList[usersList.length-1].id : lastID = 0;
+
         console.log(lastID);
         let user = {id:lastID+1, name:"", username:formData.username, email:formData.email, address:{city:""}};
 
