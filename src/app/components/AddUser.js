@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { Card, Button, Form } from 'react-bootstrap';
-//import { connect } from 'react-redux'
 import actions from "../redux/actions"
 import { saveUser } from '../api/apiService'
 import { useHistory } from 'react-router-dom';
@@ -17,20 +16,15 @@ const AddUser = () => {
     const allowRedirect = useSelector(state => state.allowRedirect)
     const dispatch = useDispatch();
 
-    //let user = {id:"", name:"", username:"", email:"", address:{city:""}};
-
     const onSubmit = (formData) => {
-        console.log(`Form: ${formData.username}`);
-        //const emptyFields = {id:101, name:"", address:{city:""}};
+        // console.log(`Form: ${formData.username}`);
         let lastID;
         usersList.length > 0 ? lastID = usersList[usersList.length-1].id : lastID = 0;
 
         console.log(lastID);
         let user = {id:lastID+1, name:"", username:formData.username, email:formData.email, address:{city:""}};
 
-        //formData.id=101; formData.name="", formData.city="";
-        //dispatch(actions.addUser({...formData, ...emptyFields}));    // add user to local state
-        dispatch(actions.addUser(user));
+        dispatch(actions.addUser(user));        // add user to redux state
         dispatch(saveUser(formData));           // add user to api
         //console.log(`state: ${usersList}`);
         
@@ -67,11 +61,5 @@ const AddUser = () => {
 
 }
 
-/*
-const mapDispatchToProps = dispatch => ({
-    saveUser: () => dispatch(saveUser()),
-    addUser: formData => dispatch(actions.addUser(formData))
-})
-*/
 
 export default AddUser;

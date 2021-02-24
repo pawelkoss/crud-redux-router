@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Table, Button, Modal } from 'react-bootstrap';
-// import { useDispatch, useSelector } from "react-redux";
-// import { connect } from 'react-redux';
-// import { getUserList } from '../api/apiService';
 import actions from '../redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -19,15 +16,6 @@ const UserListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    //console.log(`loadUsers ${loadUsers}`);
-/*
-    useEffect(() => {
-        console.log("useEffect ULC");
-        // getUserList();
-        if (loadUsers === false) dispatch(getUserList());
-        setLoadUsers(true);
-    }, []);
-*/
     const handleDelUser = () => {
         handleCloseDel();
 
@@ -38,14 +26,22 @@ const UserListContainer = () => {
         }
         setShowDel([false, null]);
     }
+    /*
     const handleDelAllUsers = () => {
         // delAll();
         dispatch(actions.delAll());
     }
-    const handleAllowRedirect = () => {
+    */
+    const handleADDRedirect = () => {
         dispatch(actions.allowRedirect(false));
         history.push("/add");
     }
+    const handleEDITRedirect = (index) => {
+        dispatch(actions.allowRedirect(false));
+        history.push(`/edit/${index}`);
+    }
+
+
 
     
 
@@ -53,7 +49,7 @@ const UserListContainer = () => {
     return (   
     <>   
     <Card>
-        <Card.Header as="h5" className="d-flex justify-content-between">User list <Button onClick={() => handleAllowRedirect()} variant="primary">Add user</Button></Card.Header>
+        <Card.Header as="h5" className="d-flex justify-content-between">User list <Button onClick={() => handleADDRedirect()} variant="primary">Add user</Button></Card.Header>
         <Card.Body>
             <Table striped bordered hover>
                 <thead>
@@ -75,7 +71,7 @@ const UserListContainer = () => {
                         <td>{user.username}</td>
                         <td>{user.email}</td>
                         <td>{user.address.city}</td>
-                        <td><Button variant="warning" >Edit</Button></td>
+                        <td><Button onClick={() => handleEDITRedirect(index)} variant="warning" >Edit</Button></td>
                         <td><Button  onClick={() => handleShowDel(index)} variant="danger" >Delete</Button></td>
                     </tr>
                     )}
@@ -105,18 +101,6 @@ const UserListContainer = () => {
        
     )
 }
-/*
-const mapStateToProps = (state) => ({
-    usersList: state.usersList,
-    loadFromState: state.loadFromState
-}) 
-const mapDispatchToProps = dispatch => ({
-    getUserList: () => dispatch(getUserList()),
-    delUser: index => dispatch(actions.delUser(index)),
-    delAll: () => dispatch(actions.delAll())
-    
-})
-*/
-//export default connect(mapStateToProps, mapDispatchToProps)(UserListContainer)
+
 export default UserListContainer
 
