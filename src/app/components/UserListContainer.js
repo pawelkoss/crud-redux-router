@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 const UserListContainer = () => {
 
   const [showDel, setShowDel] = useState([false, null]);
+  
   const handleCloseDel = () => setShowDel([false, null]);
   const handleShowDel = (index) => setShowDel([true, index]);
 
@@ -30,7 +31,12 @@ const UserListContainer = () => {
     const handleDelUser = () => {
         handleCloseDel();
 
-        dispatch(actions.delUser(showDel[1]));
+        if (showDel[1] != null ) {
+            dispatch(actions.delUser(showDel[1]));
+        } else {
+            dispatch(actions.delAll());
+        }
+        setShowDel([false, null]);
     }
     const handleDelAllUsers = () => {
         // delAll();
@@ -75,16 +81,16 @@ const UserListContainer = () => {
                     )}
                 </tbody>
             </Table>
-            <Button  onClick={() => handleDelAllUsers()} variant="danger" >Delete all users</Button>
+            <Button  onClick={() => handleShowDel(null)} variant="danger" >Delete all users</Button>
         
         </Card.Body>
     </Card>
 
     <Modal show={showDel[0]} onHide={handleCloseDel} >
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Deletion user / users</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body>Do you confirm to delete?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseDel}>
             Cancel
