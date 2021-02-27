@@ -6,8 +6,8 @@ const ALLOW_REDIRECT = 'ALLOW_REDIRECT'
 
 const addUser = user => ({type: ADD_USER, user});
 const delUser = index => ({type: DEL_USER, index});
-const modUser = user => ({type: MOD_USER, user});
+const modUser = (user, index) => ({type: MOD_USER, payload: {user, index}});
 const delAll = () => ({type: DEL_ALL});
 const allowRedirect = bool => ({type: ALLOW_REDIRECT, bool});
 
-export default {addUser, delUser, modUser, delAll, allowRedirect, ADD_USER, DEL_USER, MOD_USER, DEL_ALL, ALLOW_REDIRECT }
+export default  {addUser, delUser, modUser, delAll, allowRedirect, ADD_USER, DEL_USER, MOD_USER, DEL_ALL, ALLOW_REDIRECT }

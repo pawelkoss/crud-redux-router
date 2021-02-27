@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Card, Button, Form } from 'react-bootstrap';
 import actions from "../redux/actions"
@@ -6,34 +6,46 @@ import { saveUser } from '../api/apiService'
 import { useHistory, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-const EditUser = (props) => {
+const EditUser = () => {
+    const { index } = useParams();
+    
 
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit } = useForm({});
     const history = useHistory();
     const usersList = useSelector(state => state.usersList);
     const allowRedirect = useSelector(state => state.allowRedirect)
     const dispatch = useDispatch();
-
-    let { id } = useParams();
-    const user = usersList[id];
-
+    
+    const [user, setUser] = useState(usersList[index]);
+    
+    useEffect(() => {
+        console.log(user) 
+        //setUser(usersList[id]);
+      }, []);
+      
+    
     const onSubmit = (formData) => {
-       
-        
+      console.log(user)  
+       const user1 = {id: user.id, name: formData.name, username: formData.username, email: formData.email, address: {city: formData.city}};
+       //console.log(formData.city)
+      dispatch(actions.modUser(user1, index)); 
+      
+      alert("user modified");
+      history.push("/");
     };
 
 
 
-    console.log(id)
+    
     return (
-        <Card>
-        <Card.Header as="h5">Edit user </Card.Header>
+    <Card>
+      <Card.Header as="h5">Edit user, id: {user.id} </Card.Header>
         <Card.Body>
             <Form  onSubmit={handleSubmit(onSubmit)}>
 
             <Form.Group controlId="formName">
               <Form.Label>Name</Form.Label>
-              <Form.Control type="text" name="username" placeholder="User name" defaultValue={user.name} />
+              <Form.Control type="text" name="name" placeholder="Name" defaultValue={user.name} ref={register} />
             </Form.Group>
 
             <Form.Group controlId="formUserName">
@@ -48,7 +60,7 @@ const EditUser = (props) => {
 
             <Form.Group controlId="formCity">
               <Form.Label>City</Form.Label>
-              <Form.Control type="text" name="city" placeholder="User name" defaultValue={user.address.city} />
+              <Form.Control type="text" name="city" placeholder="City" defaultValue={user.address.city} ref={register} />
             </Form.Group>
 
             <Form.Group className="d-flex justify-content-end">
